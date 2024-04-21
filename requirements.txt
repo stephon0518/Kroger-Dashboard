@@ -5,3 +5,5 @@ pandas==2.2.2
 plotly==5.20.0
 polars==0.20.21
 python-dotenv==1.0.1
+psycopg2-binary==2.9.3
+psycopg2==2.9.3
