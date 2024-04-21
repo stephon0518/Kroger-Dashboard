@@ -58,14 +58,14 @@ jobs:
         run: unzip release.zip
 
       - name: Login to Azure
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_96A11B1E03054DB0949BFA90F3ACD587 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9872D0CF1682488ABE463FE4546F2EF8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E9A8C336E4124EC89BB59477F8429492 }}
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'Kroger-Dash'
