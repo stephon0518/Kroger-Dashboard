@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 import os
 import sqlite3
 import psycopg2
-from flask_sqlalchemy import SQLAlchemy
 import polars as pl
 import pandas as pd
 import json
@@ -70,14 +69,18 @@ tableDF = detailedDF.select(["HSHD_NUM","BASKET_NUM","DATE", "PRODUCT_NUM","DEPA
 #     return conn
 
 def connect_db():
-    # # PostgreSQL connection parameters - these should be set as environment variables
-    # dbname = os.getenv('PGDATABASE')
-    # user = os.getenv('PGUSER')
-    # password = os.getenv('PGPASSWORD')
-    # host = os.getenv('PGHOST')
+    # PostgreSQL connection parameters - these should be set as environment variables
+    dbname = os.getenv('PGDATABASE')
+    user = os.getenv('PGUSER')
+    password = os.getenv('PGPASSWORD')
+    host = os.getenv('PGHOST')
+    port = os.getenv('PGPORT') # Default PostgreSQL port is 5432
+    
+    # Form the connection string
+    conn_str = f"dbname='{dbname}' user='{user}' password='{password}' host='{host}' port='{port}'"
     
     # Establish a connection to the database
-    conn = psycopg2.connect('dashboard.db')
+    conn = psycopg2.connect(conn_str)
     cursor = conn.cursor()
     
     # Execute a query
