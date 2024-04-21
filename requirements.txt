@@ -1,0 +1,7 @@
+
+Flask==2.0.1
+Flask_Caching==2.1.0
+pandas==2.2.2
+plotly==5.20.0
+polars==0.20.21
+python-dotenv==1.0.1

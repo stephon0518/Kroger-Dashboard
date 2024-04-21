@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div>
+    
+       <!--     
+            {% for row in data %}
+            <tr>
+                <td>{{ row.HSHD_NUM }}</td>
+                <td>{{ row.BASKET_NUM }}</td>
+                <td>{{ row.DATE }}</td>
+                <td>{{ row.PRODUCT_NUM }}</td>
+                <td>{{ row.DEPARTMENT }}</td>
+                <td>{{ row.COMMODITY }}</td>
+                <td>{{ row.SPEND }}</td>
+                <td>{{ row.UNITS }}</td>
+                <td>{{ row.STORE_R }}</td>
+                <td>{{ row.WEEK_NUM }}</td>
+                <td>{{ row.YEAR }}</td>
+                <td>{{ row.L }}</td>
+                <td>{{ row.AGE_RANGE }}</td>
+                <td>{{ row.MARITAL }}</td>
+                <td>{{ row.INCOME_RANGE }}</td>
+                <td>{{ row.HOMEOWNER }}</td>
+                <td>{{ row.HSHD_COMPOSITION }}</td>
+                <td>{{ row.HH_SIZE }}</td>
+                <td>{{ row.CHILDREN }}</td>
+            </tr>
+            {% endfor %}
+        </table> -->
+
+        <div class="row">
+            <div id='totalSpentAgeBar' class='chart g-col-6'style="width: 25%;">
+                <script type='text/javascript'>
+                    var pie = {{totalSpentAgeBar | safe}};
+                    Plotly.plot('totalSpentAgeBar',pie,{});
+                </script>
+            </div>
+            <div id='totalSpentMarBar' class='chart g-col-6'style="width: 25%;">
+                <script type='text/javascript'>
+                    var pie = {{totalSpentMarBar | safe}};
+                    Plotly.plot('totalSpentMarBar',pie,{});
+                </script>
+            </div>
+            <div id='totalSpentIncBar' class='chart g-col-6'style="width: 25%;">
+                <script type='text/javascript'>
+                    var pie = {{totalSpentIncBar | safe}};
+                    Plotly.plot('totalSpentIncBar',pie,{});
+                </script>
+            </div>
+            <div id='totalSpentChiBar' class='chart g-col-6'style="width: 24%;">
+                <script type='text/javascript'>
+                    var pie = {{totalSpentChiBar | safe}};
+                    Plotly.plot('totalSpentChiBar',pie,{});
+                </script>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div id='averageSpendAgePie' class='chart g-col-6'style="width: 25%">
+                <script type='text/javascript'>
+                    var pie = {{averageSpendAgePie | safe}};
+                    Plotly.plot('averageSpendAgePie',pie,{});
+                </script>
+            </div>
+            <div id='averageSpendMarPie' class='chart g-col-6'style="width: 25%">
+                <script type='text/javascript'>
+                    var pie = {{averageSpendMarPie | safe}};
+                    Plotly.plot('averageSpendMarPie',pie,{});
+                </script>
+            </div>
+            <div id='averageSpendIncPie' class='chart g-col-6'style="width: 25%">
+                <script type='text/javascript'>
+                    var pie = {{averageSpendIncPie | safe}};
+                    Plotly.plot('averageSpendIncPie',pie,{});
+                </script>
+            </div>
+            <div id='averageSpendChiPie' class='chart g-col-6'style="width: 24%">
+                <script type='text/javascript'>
+                    var pie = {{averageSpendChiPie | safe}};
+                    Plotly.plot('averageSpendChiPie',pie,{});
+                </script>
+            </div>
+        
+    </div>
+    <div id="table"></div> 
+
+    <script>
+        const updateUrl = (prev, query) => {
+            return prev + (prev.indexOf('?') >= 0 ? '&' : '?') + new URLSearchParams(query).toString();
+        };
+
+        new gridjs.Grid({
+            columns: [
+                {id: 'HSHD_NUM', name: 'Household Number'},
+                {id: 'BASKET_NUM', name: 'Basket Number'},
+                {id: 'DATE', name: 'Date'},
+                {id: 'PRODUCT_NUM', name: 'Product Number'},
+                {id: 'DEPARTMENT', name: 'Department'},
+                {id: 'COMMODITY', name: 'Commodity'},
+                {id: 'SPEND', name: 'Spend'},
+                {id: 'UNITS', name: 'Units'},
+                {id: 'STORE_R', name: 'Store Region'},
+                {id: 'WEEK_NUM', name: 'Week Number'},
+                {id: 'YEAR', name: 'Year'},
+            ],
+            server: {
+                url: 'dashboard/table/data',
+                then: results => results.data,
+                total: results => results.total
+            },
+            search: {
+            enabled: true,
+            server: {
+                url: (prev, search) => {
+                return updateUrl(prev, {search});
+                },
+            },
+            },
+            sort: {
+                enabled: true,
+                multiColumn: true,
+                server: {
+                    url: (prev, columns) => {
+                    const columnIds = ['HSHD_NUM', 'BASKET_NUM', 'DATE', 'PRODUCT_NUM', 'DEPARTMENT', 'COMMODITY'];
+                    const sort = columns.map(col => (col.direction === 1 ? '+,' : '-,') + columnIds[col.index]);
+                    return updateUrl(prev, {sort});
+                    },
+                },
+            },
+            pagination: {
+            enabled: true,
+            server: {
+                url: (prev, page, limit) => {
+                return updateUrl(prev, {start: page * limit, length: limit});
+                },
+            },
+            },
+        }).render(document.getElementById('table'));
+
+      </script>
+</div>
+
+{% endblock %}
