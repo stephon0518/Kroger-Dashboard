@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - KrogerDashboard
+name: Build and deploy Python app to Azure Web App - krogerdashboard
 
 on:
   push:
@@ -65,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C749744571214391A140667696CB8DD3 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_87FA11ACD9F44405901F97AE9730F55A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3139DE6334FB42F8903177CA68C6D9CC }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FBC17BE9C6E248A6857A85C9AA69E79A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6C981638C308473FBD3F887DAEC6C317 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_25D18449C4AD40D9B7E556F232553415 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'KrogerDashboard'
+          app-name: 'krogerdashboard'
           slot-name: 'Production'
           
