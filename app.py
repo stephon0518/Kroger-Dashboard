@@ -14,7 +14,7 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
-
+import csv
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE':'simple'})
@@ -236,14 +236,12 @@ def loadLogin():
 def login():
     username = request.form['username']
     password = request.form['password']
-    
-    g.db = connect_db()
-    cursor = g.db.execute('SELECT * FROM user where username = %s and password = %s', (username, password))
-    user = cursor.fetchone()
-    if (user == None):
-        g.db.close()
+
+    loginsDF = pl.read_csv("data/logins.csv")
+
+    user = loginsDF.filter((pl.col('username') == username) & (pl.col('password') == password))
+    if user.height == 0:
         return None
-    g.db.close()
     return redirect(url_for('loadDashboard'))
 
 @app.route('/register', methods=['POST'])
@@ -252,22 +250,18 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        
-        g.db = connect_db()
-        cursor = g.db.execute('SELECT * FROM user where username = %s and email = %s', (username, email))
-        users = cursor.fetchall()
 
-        if len(users) != 0:
-            g.db.close()
+        loginsDF = pl.read_csv("data/logins.csv")
+        
+        user = loginsDF.filter((pl.col('username') == username) & (pl.col('email') == email))
+
+        if user.height != 0:
             return render_template('register.html', error='username and email is already in use.')
         
-        g.db.execute('INSERT INTO user (username, password, email) VALUES (%s, %s, %s)', (username, password, email))
-
-        cursor = g.db.execute('SELECT * FROM user where username = %s', (username,))
-        newUser = cursor.fetchone()
-
-        g.db.commit()
-        g.db.close()
+        with open("data/logins.csv", 'a', newline='') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([email,username,password])
+        
         return redirect(url_for('loadDashboard'))
 
     
