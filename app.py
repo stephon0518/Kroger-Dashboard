@@ -51,52 +51,52 @@ joinedDF = demosDF.join(hshdDF,on='HSHD_NUM',how='inner')
 tableDF = detailedDF.select(["HSHD_NUM","BASKET_NUM","DATE", "PRODUCT_NUM","DEPARTMENT", "COMMODITY","SPEND",'UNITS',"STORE_R", "WEEK_NUM", "YEAR"])
 
 
-# # SQL Lite DB for login information.
-# def connect_db():
-#     conn = sqlite3.connect('dashboard.db')
-#     cursor = conn.cursor()
-
-#     cursor.executescript('''
-#         create table if not exists user (
-#             id integer primary key autoincrement,
-#             username TEXT NOT NULL,
-#             password TEXT NOT NULL,
-#             email TEXT NOT NULL
-#         );
-#      ''')
-
-#     conn.commit()
-#     return conn
-
+# SQL Lite DB for login information.
 def connect_db():
-    # PostgreSQL connection parameters - these should be set as environment variables
-    # dbname = os.getenv('PGDATABASE')
-    # user = os.getenv('PGUSER')
-    # password = os.getenv('PGPASSWORD')
-    # host = os.getenv('PGHOST')
-    # port = os.getenv('PGPORT') # Default PostgreSQL port is 5432
-    
-    # Form the connection string
-    conn_str = f"dbname='postgres' user='postgres' password='1831' host='localhost' port='5432'"
-    
-    # Establish a connection to the database
-    conn = psycopg2.connect(conn_str)
+    conn = sqlite3.connect('dashboard.db')
     cursor = conn.cursor()
-    
-    # Execute a query
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS user (
-            id SERIAL PRIMARY KEY,
+
+    cursor.executescript('''
+        create table if not exists user (
+            id integer primary key autoincrement,
             username TEXT NOT NULL,
             password TEXT NOT NULL,
             email TEXT NOT NULL
         );
-    ''')
+     ''')
 
-    # Commit changes
     conn.commit()
-    
     return conn
+
+# def connect_db():
+#     # PostgreSQL connection parameters - these should be set as environment variables
+#     # dbname = os.getenv('PGDATABASE')
+#     # user = os.getenv('PGUSER')
+#     # password = os.getenv('PGPASSWORD')
+#     # host = os.getenv('PGHOST')
+#     # port = os.getenv('PGPORT') # Default PostgreSQL port is 5432
+    
+#     # Form the connection string
+#     conn_str = f"dbname='postgres' user='postgres' password='1831' host='localhost' port='5432'"
+    
+#     # Establish a connection to the database
+#     conn = psycopg2.connect(conn_str)
+#     cursor = conn.cursor()
+    
+#     # Execute a query
+#     cursor.execute('''
+#         CREATE TABLE IF NOT EXISTS user (
+#             id SERIAL PRIMARY KEY,
+#             username TEXT NOT NULL,
+#             password TEXT NOT NULL,
+#             email TEXT NOT NULL
+#         );
+#     ''')
+
+#     # Commit changes
+#     conn.commit()
+    
+#     return conn
 
 
 @cache.memoize()
