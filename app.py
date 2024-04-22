@@ -69,14 +69,14 @@ tableDF = detailedDF.select(["HSHD_NUM","BASKET_NUM","DATE", "PRODUCT_NUM","DEPA
 #     return conn
 
 def connect_db():
-    # dbname = os.getenv('PGDATABASE')
-    # user = os.getenv('PGUSER')
-    # password = os.getenv('PGPASSWORD')
-    # host = os.getenv('PGHOST')
-    # port = os.getenv('PGPORT') # Default PostgreSQL port is 5432
+    dbname = os.getenv('PG_DATABASE')
+    user = os.getenv('PG_USER')
+    password = os.getenv('PG_PASSWORD')
+    host = os.getenv('PG_HOST')
+    port = os.getenv('PG_PORT') # Default PostgreSQL port is 5432
     
     # Form the connection string
-    conn_str = f"dbname='postgres' user='postgres' password='1831' host='localhost' port='5432'"
+    conn_str = f"dbname={dbname} user={user} password={password} host={host} port={port}"
     
     conn = psycopg2.connect(conn_str)
     cursor = conn.cursor()
