@@ -69,7 +69,6 @@ tableDF = detailedDF.select(["HSHD_NUM","BASKET_NUM","DATE", "PRODUCT_NUM","DEPA
 #     return conn
 
 def connect_db():
-    # PostgreSQL connection parameters - these should be set as environment variables
     # dbname = os.getenv('PGDATABASE')
     # user = os.getenv('PGUSER')
     # password = os.getenv('PGPASSWORD')
@@ -79,11 +78,9 @@ def connect_db():
     # Form the connection string
     conn_str = f"dbname='postgres' user='postgres' password='1831' host='localhost' port='5432'"
     
-    # Establish a connection to the database
     conn = psycopg2.connect(conn_str)
     cursor = conn.cursor()
     
-    # Execute a query
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS user (
             id SERIAL PRIMARY KEY,
@@ -93,7 +90,6 @@ def connect_db():
         );
     ''')
 
-    # Commit changes
     conn.commit()
     
     return conn
