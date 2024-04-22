@@ -242,7 +242,7 @@ def login():
     password = request.form['password']
     
     g.db = connect_db()
-    cursor = g.db.execute('SELECT * FROM user where username = ? and password = ?', (username, password))
+    cursor = g.db.execute('SELECT * FROM user where username = %s and password = %s', (username, password))
     user = cursor.fetchone()
     if (user == None):
         g.db.close()
@@ -258,16 +258,16 @@ def register():
         email = request.form['email']
         
         g.db = connect_db()
-        cursor = g.db.execute('SELECT * FROM user where username = ? and email = ?', (username, email))
+        cursor = g.db.execute('SELECT * FROM user where username = %s and email = %s', (username, email))
         users = cursor.fetchall()
 
         if len(users) != 0:
             g.db.close()
             return render_template('register.html', error='username and email is already in use.')
         
-        g.db.execute('INSERT INTO user (username, password, email) VALUES (?, ?, ?)', (username, password, email))
+        g.db.execute('INSERT INTO user (username, password, email) VALUES (%s, %s, %s)', (username, password, email))
 
-        cursor = g.db.execute('SELECT * FROM user where username = ?', (username,))
+        cursor = g.db.execute('SELECT * FROM user where username = %s', (username,))
         newUser = cursor.fetchone()
 
         g.db.commit()
